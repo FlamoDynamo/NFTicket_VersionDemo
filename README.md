@@ -100,6 +100,8 @@ Use PyTeal to compile the smart contract files:
 4. **Deploy the Smart Contract:**
 After compiling, deploy the contract using Algorand SDK or Algokit and store the `application ID`.
 
+**---**
+
 Welcome to your new AlgoKit project!
 
 This is your workspace root. A `workspace` in AlgoKit is an orchestrated collection of standalone projects (backends, smart contracts, frontend apps and etc).
