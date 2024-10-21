@@ -1,85 +1,85 @@
 # NFTicket - Smart Contract for Event Management with NFT Integration
 
 ## Overview
-NFTicket is a smart contract built on the Algorand blockchain that integrates NFT (Non-Fungible Token) management for events. This contract allows users to create, store, and manage events by associating each event with a unique NFT ID and setting an end timestamp for each event. The contract also supports stopping events once their designated time has passed.
+NFTicket is a smart contract built on the Algorand blockchain, which integrates NFT (Non-Fungible Token) management for events. It enables users to create, store, and manage events associated with unique NFT IDs and specific end timestamps. The smart contract also supports event stopping, ticket issuance, and managing attendants.
 
 ## Features
 
 ### 1. **Contract Creation**
-   - **Functionality:** When the contract is deployed, it initializes the `event_count` to `0`, which keeps track of the total number of events created through the contract.
-   - **Purpose:** Ensures that the contract starts with a clean state and has the ability to track event creation.
+   - **Functionality:** Upon deployment, the contract initializes the `event_count` to `0`, which tracks the total number of events created.
    - **Log Output:** 
      - `"Creating contract, initializing event_count to 0"`
 
 ### 2. **Create Event**
-   - **Functionality:** The contract allows the creator to create a new event by specifying the event's NFT ID and the end timestamp. Each event is assigned a unique ID based on the current `event_count`.
+   - **Functionality:** Allows the creator to create a new event by specifying the NFT ID, end timestamp, and total number of tickets.
    - **Steps:**
-     - Checks that the current number of events does not exceed the maximum allowed events (`MAX_EVENTS`).
-     - Increments the `event_count` by 1.
-     - Stores the provided **NFT ID** and **end timestamp** in the global state.
-     - Initializes the `event_stopped` flag to `0` (event is active).
+     - Checks that the current number of events is within the allowed maximum (`MAX_EVENTS`).
+     - Increments the `event_count`.
+     - Stores the NFT ID, end timestamp, and ticket details in the global state.
    - **Log Output:**
      - `"Handling create_event"`
-     - `"Event count is within limit"`
      - `"Incremented event_count"`
-     - `"Stored nft_id"`
-     - `"Stored end_timestamp"`
-     - `"Initialized event_stopped to 0"`
+     - `"Stored nft_id and end_timestamp"`
+     - `"Ticket information stored"`
 
 ### 3. **Stop Event**
-   - **Functionality:** Once an event's end time has passed, the creator can stop the event by specifying the event ID. The contract updates the event's state to indicate it has been stopped.
+   - **Functionality:** Stops an event when its end timestamp has passed by updating the state.
    - **Steps:**
-     - Ensures the event ID is valid (i.e., the ID is less than or equal to the current `event_count`).
-     - Verifies that the current timestamp is greater than or equal to the event's end time.
-     - Updates the `event_stopped` state to `1` (event is stopped).
+     - Ensures the event ID is valid.
+     - Verifies the current timestamp is greater than the event's end time.
+     - Marks the event as stopped.
    - **Log Output:**
      - `"Handling stop_event"`
-     - `"Event ID is valid"`
-     - `"Event has reached its end time"`
      - `"Event has been stopped"`
 
-### 4. **Logic Protection (Assertions)**
-   - **Functionality:** The contract includes several key assertions to ensure the integrity of the event management process. If any condition fails, the transaction is rejected.
-   - **Checks:**
-     - The number of events does not exceed the maximum limit (`MAX_EVENTS`).
-     - The event ID is valid when attempting to stop an event.
-     - The event end time has passed before the event can be stopped.
-   - **Purpose:** These checks prevent invalid operations and ensure that all data remains consistent and correct throughout the lifecycle of the contract.
+### 4. **Register Attendant**
+   - **Functionality:** Registers attendants for an event by updating their status and issuing tickets.
+   - **Steps:**
+     - Verifies the event has available tickets.
+     - Registers the attendant in local state and updates ticket counts.
+   - **Log Output:**
+     - `"Attendant registered"`
+     - `"Tickets updated"`
 
 ### 5. **Transaction Logging**
-   - **Functionality:** Logs are generated at critical points in the contract's execution, helping users and developers trace the execution flow and debug if necessary.
-   - **Purpose:** Provides transparency into the contract's operations and helps monitor the contract's behavior during transactions.
+   - **Functionality:** Logs are created at key transaction points, including event creation, ticket issuance, and event stopping.
+   - **Purpose:** Assists with debugging and ensures transparency.
 
 ### 6. **Application JSON Spec (ARC-4 Compliant)**
-   - **Functionality:** The project generates an `application.json` file compliant with the **ARC-4** standard. This file contains details about the smart contract, including supported methods (`create_event`, `stop_event`), global state schema, and descriptions of the available functions.
-   - **Purpose:** Ensures that the smart contract can be easily integrated with tools like **Algokit** or other Algorand-compatible platforms.
+   - **Functionality:** The smart contract generates an ARC-4 compliant `application.json`, containing supported methods, global state schema, and descriptions of the available functions.
+   - **Purpose:** Ensures compatibility with Algorand tools and simplifies integration.
 
 ## How to Use
 
 1. **Contract Creation:**
-   Deploy the contract on the Algorand blockchain. The contract will initialize with an event count of `0`.
+   - Deploy the contract using the Algorand SDK. The contract will initialize `event_count` to `0`.
 
 2. **Create Event:**
-   Call the `create_event` method with the following parameters:
-   - `nft_id`: The NFT ID associated with the event.
-   - `end_timestamp`: The timestamp when the event will end.
-
-   The contract will store the event details and track the number of events.
+   - Call the `create_event` method with:
+     - `nft_id`: The NFT ID for the event.
+     - `end_timestamp`: Timestamp when the event ends.
+     - `ticket_count`: The total number of tickets for the event.
 
 3. **Stop Event:**
-   Once the event has ended (as determined by the `end_timestamp`), call the `stop_event` method with the `event_id` to stop the event. The contract will validate the time and update the event's state accordingly.
+   - After an event's end time, call the `stop_event` method with the `event_id` to stop the event.
+
+4. **Register Attendant:**
+   - Call the `add_attendant` method to register an attendant and issue a ticket.
 
 ## Global State Variables
 
-- **event_count**: Tracks the number of events created.
-- **event_x_nft_id**: Stores the NFT ID for each event `x`.
-- **event_end_x**: Stores the end timestamp for event `x`.
-- **event_stopped_x**: Indicates whether event `x` has been stopped (`1` if stopped, `0` if active).
+- **event_count**: Tracks the total number of events created.
+- **event_x_nft_id**: Stores the NFT ID for each event.
+- **event_end_x**: Stores the end timestamp for each event.
+- **event_stopped_x**: Indicates whether an event has been stopped.
+- **event_ticket_count_x**: Tracks remaining tickets for an event.
+- **event_ticket_issued_x**: Tracks issued tickets for an event.
 
 ## Methods
 
-- **create_event(uint64 nft_id, uint64 end_timestamp)**: Creates a new event with a specific NFT ID and end timestamp. Returns `1` on success, `0` on failure.
-- **stop_event(uint64 event_id)**: Stops an event once its end timestamp has passed. Returns `1` on success, `0` on failure.
+- **create_event(uint64 nft_id, uint64 end_timestamp, uint64 ticket_count)**: Creates a new event with the specified NFT ID, end time, and ticket count. Returns `1` on success.
+- **stop_event(uint64 event_id)**: Stops an event. Returns `1` on success.
+- **add_attendant(uint64 event_id)**: Registers an attendant and issues a ticket for the specified event.
 
 ## Installation and Setup
 
