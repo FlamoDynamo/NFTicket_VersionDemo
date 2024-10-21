@@ -1,0 +1,352 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l71
+txn NumAppArgs
+int 3
+==
+txna ApplicationArgs 0
+byte "create_event"
+==
+&&
+txn Sender
+global CreatorAddress
+==
+&&
+bnz main_l37
+txn NumAppArgs
+int 2
+==
+txna ApplicationArgs 0
+byte "stop_event"
+==
+&&
+txn Sender
+global CreatorAddress
+==
+&&
+bnz main_l14
+txn OnCompletion
+int NoOp
+==
+bnz main_l13
+txn OnCompletion
+int CloseOut
+==
+bnz main_l12
+txn OnCompletion
+int ClearState
+==
+bnz main_l11
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l10
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l9
+err
+main_l9:
+int 0
+return
+main_l10:
+int 0
+return
+main_l11:
+int 1
+return
+main_l12:
+int 1
+return
+main_l13:
+int 1
+return
+main_l14:
+byte "Handling stop_event"
+log
+txna ApplicationArgs 1
+btoi
+byte "event_count"
+app_global_get
+<=
+assert
+byte "Event ID is valid"
+log
+global LatestTimestamp
+byte "event_end_"
+txna ApplicationArgs 1
+btoi
+int 1
+==
+bnz main_l36
+txna ApplicationArgs 1
+btoi
+int 2
+==
+bnz main_l35
+txna ApplicationArgs 1
+btoi
+int 3
+==
+bnz main_l34
+txna ApplicationArgs 1
+btoi
+int 4
+==
+bnz main_l33
+txna ApplicationArgs 1
+btoi
+int 5
+==
+bnz main_l32
+byte ""
+main_l20:
+concat
+app_global_get
+>=
+assert
+byte "Event has reached its end time"
+log
+byte "event_stopped_"
+txna ApplicationArgs 1
+btoi
+int 1
+==
+bnz main_l31
+txna ApplicationArgs 1
+btoi
+int 2
+==
+bnz main_l30
+txna ApplicationArgs 1
+btoi
+int 3
+==
+bnz main_l29
+txna ApplicationArgs 1
+btoi
+int 4
+==
+bnz main_l28
+txna ApplicationArgs 1
+btoi
+int 5
+==
+bnz main_l27
+byte ""
+main_l26:
+concat
+int 1
+app_global_put
+byte "Event has been stopped"
+log
+int 1
+return
+main_l27:
+byte "5"
+b main_l26
+main_l28:
+byte "4"
+b main_l26
+main_l29:
+byte "3"
+b main_l26
+main_l30:
+byte "2"
+b main_l26
+main_l31:
+byte "1"
+b main_l26
+main_l32:
+byte "5"
+b main_l20
+main_l33:
+byte "4"
+b main_l20
+main_l34:
+byte "3"
+b main_l20
+main_l35:
+byte "2"
+b main_l20
+main_l36:
+byte "1"
+b main_l20
+main_l37:
+byte "Handling create_event"
+log
+byte "event_count"
+app_global_get
+int 5
+<
+assert
+byte "Event count is within limit"
+log
+byte "event_count"
+byte "event_count"
+app_global_get
+int 1
++
+app_global_put
+byte "Incremented event_count"
+log
+byte "event_"
+byte "event_count"
+app_global_get
+int 1
+==
+bnz main_l70
+byte "event_count"
+app_global_get
+int 2
+==
+bnz main_l69
+byte "event_count"
+app_global_get
+int 3
+==
+bnz main_l68
+byte "event_count"
+app_global_get
+int 4
+==
+bnz main_l67
+byte "event_count"
+app_global_get
+int 5
+==
+bnz main_l66
+byte ""
+main_l43:
+concat
+byte "_nft_id"
+concat
+txna ApplicationArgs 1
+btoi
+app_global_put
+byte "Stored nft_id"
+log
+byte "event_end_"
+byte "event_count"
+app_global_get
+int 1
+==
+bnz main_l65
+byte "event_count"
+app_global_get
+int 2
+==
+bnz main_l64
+byte "event_count"
+app_global_get
+int 3
+==
+bnz main_l63
+byte "event_count"
+app_global_get
+int 4
+==
+bnz main_l62
+byte "event_count"
+app_global_get
+int 5
+==
+bnz main_l61
+byte ""
+main_l49:
+concat
+txna ApplicationArgs 2
+btoi
+app_global_put
+byte "Stored end_timestamp"
+log
+byte "event_stopped_"
+byte "event_count"
+app_global_get
+int 1
+==
+bnz main_l60
+byte "event_count"
+app_global_get
+int 2
+==
+bnz main_l59
+byte "event_count"
+app_global_get
+int 3
+==
+bnz main_l58
+byte "event_count"
+app_global_get
+int 4
+==
+bnz main_l57
+byte "event_count"
+app_global_get
+int 5
+==
+bnz main_l56
+byte ""
+main_l55:
+concat
+int 0
+app_global_put
+byte "Initialized event_stopped to 0"
+log
+int 1
+return
+main_l56:
+byte "5"
+b main_l55
+main_l57:
+byte "4"
+b main_l55
+main_l58:
+byte "3"
+b main_l55
+main_l59:
+byte "2"
+b main_l55
+main_l60:
+byte "1"
+b main_l55
+main_l61:
+byte "5"
+b main_l49
+main_l62:
+byte "4"
+b main_l49
+main_l63:
+byte "3"
+b main_l49
+main_l64:
+byte "2"
+b main_l49
+main_l65:
+byte "1"
+b main_l49
+main_l66:
+byte "5"
+b main_l43
+main_l67:
+byte "4"
+b main_l43
+main_l68:
+byte "3"
+b main_l43
+main_l69:
+byte "2"
+b main_l43
+main_l70:
+byte "1"
+b main_l43
+main_l71:
+byte "Creating contract, initializing event_count to 0"
+log
+byte "event_count"
+int 0
+app_global_put
+int 1
+return
