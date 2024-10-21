@@ -88,6 +88,18 @@ NFTicket is a smart contract built on the Algorand blockchain that integrates NF
    git clone https://github.com/FlamoDynamo/NFTicket.git
    cd NFTicket
 
+2. **Install Dependencies:**
+Make sure you have Algorand SDK installed and set up your environment variables (Algorand node address and API key).
+
+3. **Compile Smart Contract:**
+Use PyTeal to compile the smart contract files:
+  ```bash
+  python smart_contracts/contract/contract.py
+
+4. **Deploy the Smart Contract:**
+After compiling, deploy the contract using Algorand SDK or Algokit and store the `application ID`.
+
+**---**
 
 Welcome to your new AlgoKit project!
 
