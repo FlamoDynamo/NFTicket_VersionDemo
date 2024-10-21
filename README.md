@@ -95,11 +95,10 @@ Make sure you have Algorand SDK installed and set up your environment variables 
 Use PyTeal to compile the smart contract files:
   ```bash
   python smart_contracts/contract/contract.py
+  ```
 
 4. **Deploy the Smart Contract:**
 After compiling, deploy the contract using Algorand SDK or Algokit and store the `application ID`.
-
-**---**
 
 Welcome to your new AlgoKit project!
 
