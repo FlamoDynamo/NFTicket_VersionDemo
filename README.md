@@ -100,6 +100,8 @@ Use PyTeal to compile the smart contract files:
 4. **Deploy the Smart Contract:**
 After compiling, deploy the contract using Algorand SDK or Algokit and store the `application ID`.
 
+**In addition to the above functions, the project also has a check-in function at the gate using the wallet information containing the requested NFT of the attending guests.**
+
 **---**
 
 Welcome to your new AlgoKit project!
